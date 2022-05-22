@@ -1,0 +1,7 @@
+_target_: src.models.pct_module.PCTModule
+lr: 0.001
+weight_decay: 0.0005
+
+net:
+  _target_: src.models.components.pct_net.Pct
+  output_channels: 40
