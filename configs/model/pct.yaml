@@ -6,5 +6,5 @@ net:
   _target_: src.models.components.pct_net.Pct
   output_channels: 40
 
-visual_pc: True
+visual_pc: false
 visual_path: "/home/fla/workspace/2022-PCT-Lightning/vis_output"
