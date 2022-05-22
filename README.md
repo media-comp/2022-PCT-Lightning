@@ -3,8 +3,8 @@ This is a Pytorch Lightning implementation of PCT: Point Cloud Transformer.
 
 Paper link: https://arxiv.org/pdf/2012.09688.pdf
 
-
-
+![img](https://github.com/media-comp/2022-PCT-Lightning/blob/main/imgs/0_8.png)
+![img](https://github.com/media-comp/2022-PCT-Lightning/blob/main/imgs/1_4.png)
 
 ### Requirements
 
