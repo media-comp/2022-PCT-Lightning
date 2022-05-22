@@ -33,3 +33,4 @@ pudb            # debugger
 # --------- pct --------- #
 #open3d          # optional, only for visualization
 #cv2             # optional, only for visualization
+h5py
