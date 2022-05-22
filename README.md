@@ -91,8 +91,9 @@ python train.py
 
 You can change the training parameters in `./configs/train.yaml`
 
-### Citation
-If it is helpful for your work, please cite this paper:
+### Acknowledgement
+
+Please cite this paper if you found this repo useful for your research.
 ```latex
 @misc{guo2020pct,
       title={PCT: Point Cloud Transformer}, 
@@ -103,3 +104,9 @@ If it is helpful for your work, please cite this paper:
       primaryClass={cs.CV}
 }
 ```
+
+This repo borrows tons of codes from [PCT_Pytorch](https://github.com/Strawberry-Eat-Mango/PCT_Pytorch)
+
+The visualzation tool comes from [Shape2Motion](https://github.com/wangxiaogang866/Shape2Motion)
+
+This repo uses this great template [lightning-hydra-template](https://github.com/ashleve/lightning-hydra-template)
