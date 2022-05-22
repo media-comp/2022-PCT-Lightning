@@ -3,6 +3,9 @@ This is a Pytorch Lightning implementation of PCT: Point Cloud Transformer.
 
 Paper link: https://arxiv.org/pdf/2012.09688.pdf
 
+
+
+
 ### Requirements
 
 This repo is tested with:
@@ -91,7 +94,7 @@ python train.py
 
 You can change the training parameters in `./configs/train.yaml`
 
-### Acknowledgement
+### Acknowledgment
 
 Please cite this paper if you found this repo useful for your research.
 ```latex
