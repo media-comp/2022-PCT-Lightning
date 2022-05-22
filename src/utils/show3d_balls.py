@@ -22,7 +22,7 @@ cv2.setMouseCallback('show3d',onmouse)
 
 dll=np.ctypeslib.load_library(os.path.join(BASE_DIR, 'render_balls_so'),'.')
 
-def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlue=0,freezerot=False,background=(0,0,0),normalizecolor=True,ballradius=10):
+def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlue=0,freezerot=False,background=(0,0,0),normalizecolor=True,ballradius=10,text=''):
     global showsz,mousex,mousey,zoom,changed
     xyz=xyz-xyz.mean(axis=0)
     radius=((xyz**2).sum(axis=-1)**0.5).max()
@@ -53,7 +53,7 @@ def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlu
         if not freezerot:
             xangle=(mousey-0.5)*np.pi*1.2
         else:
-            xangle=0
+            xangle=135
         rotmat=rotmat.dot(np.array([
             [1.0,0.0,0.0],
             [0.0,np.cos(xangle),-np.sin(xangle)],
@@ -62,7 +62,7 @@ def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlu
         if not freezerot:
             yangle=(mousex-0.5)*np.pi*1.2
         else:
-            yangle=0
+            yangle=135
         rotmat=rotmat.dot(np.array([
             [np.cos(yangle),0.0,-np.sin(yangle)],
             [0.0,1.0,0.0],
@@ -96,89 +96,7 @@ def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlu
             cv2.putText(show,'xangle %d'%(int(xangle/np.pi*180)),(30,showsz-30),0,0.5,cv2.cv.CV_RGB(255,0,0))
             cv2.putText(show,'yangle %d'%(int(yangle/np.pi*180)),(30,showsz-50),0,0.5,cv2.cv.CV_RGB(255,0,0))
             cv2.putText(show,'zoom %d%%'%(int(zoom*100)),(30,showsz-70),0,0.5,cv2.cv.CV_RGB(255,0,0))
-    changed=True
-    while True:
-        if changed:
-            render()
-            changed=False
-        cv2.imshow('show3d',show)
-        if waittime==0:
-            cmd=cv2.waitKey(10)%256
-        else:
-            cmd=cv2.waitKey(waittime)%256
-        if cmd==ord('q'):
-            break
-        elif cmd==ord('Q'):
-            sys.exit(0)
-
-        if cmd==ord('t') or cmd == ord('p'):
-            if cmd == ord('t'):
-                if c_gt is None:
-                    c0=np.zeros((len(xyz),),dtype='float32')+255
-                    c1=np.zeros((len(xyz),),dtype='float32')+255
-                    c2=np.zeros((len(xyz),),dtype='float32')+255
-                else:
-                    c0=c_gt[:,0]
-                    c1=c_gt[:,1]
-                    c2=c_gt[:,2]
-            else:
-                if c_pred is None:
-                    c0=np.zeros((len(xyz),),dtype='float32')+255
-                    c1=np.zeros((len(xyz),),dtype='float32')+255
-                    c2=np.zeros((len(xyz),),dtype='float32')+255
-                else:
-                    c0=c_pred[:,0]
-                    c1=c_pred[:,1]
-                    c2=c_pred[:,2]
-            if normalizecolor:
-                c0/=(c0.max()+1e-14)/255.0
-                c1/=(c1.max()+1e-14)/255.0
-                c2/=(c2.max()+1e-14)/255.0
-            c0=np.require(c0,'float32','C')
-            c1=np.require(c1,'float32','C')
-            c2=np.require(c2,'float32','C')
-            changed = True
-
-
-
-        if cmd==ord('n'):
-            zoom*=1.1
-            changed=True
-        elif cmd==ord('m'):
-            zoom/=1.1
-            changed=True
-        elif cmd==ord('r'):
-            zoom=1.0
-            changed=True
-        elif cmd==ord('s'):
-            cv2.imwrite('show3d.png',show)
-        if waittime!=0:
-            break
-    return cmd
-
-if __name__=='__main__':
-    import scipy.io as sio
-    #train_data = sio.loadmat('/home/fla/workspace/Shape2Motion/dataset/Shape2Motion_PC/train_data/training_data_2.mat')['Training_data'][0][0]['inputs_all'][0][0][:,0:3]
-    train_data = sio.loadmat('/home/fla/workspace/Shape2Motion/dataset/Shape2Motion_PC/train_data/training_data_3.mat')['Training_data'][0][0]
-
-    # N = 4096
-    proposal = train_data['proposal'][0][0] # Segmentation
-    dof_matrix = train_data['dof_matrix'][0][0] # ??? shape (4,7)
-    all_direction_kmeans = train_data['all_direction_kmeans'][0][0] # ??? (14,3)
-    similar_matrix = train_data['similar_matrix'][0][0] # (4096, 4096)
-    core_position = train_data['core_position'][0][0] # The point which decides the joint
-    motion_direction_class = train_data['motion_direction_class'][0][0] # The joint class (each points)
-    motion_direction_delta = train_data['motion_direction_delta'][0][0] # ??? (4096, 3)
-    motion_position_param = train_data['motion_position_param'][0][0] # ??? (4096, 3)
-    motion_dof_type = train_data['motion_dof_type'][0][0] # The joint class (each points)
-    inputs_all = train_data['inputs_all'][0][0] # [0:3] xyz; [3:] normalized xyz
-
-    np.random.seed(100)
-    c_gt = np.zeros(shape=(4096,3))
-    
-    #c_gt[:,0] = motion_direction_class[:,0] 
-    #c_gt = motion_direction_delta*100
-    c_gt[:,0] = np.sum([10*i*proposal[i] for i in range(len(proposal))],axis=0)
-    c_gt[:,1] = 10
-    #showpoints(np.random.randn(2500,3))
-    showpoints(inputs_all[:,0:3])
+        if not text == '':
+            cv2.putText(show,'gt/pred: {}'.format(text),(30,showsz-30),0,0.5,(255,0,0))
+    render()
+    return show

@@ -29,4 +29,4 @@ seed: null
 name: "default"
 
 # passing checkpoint path is necessary
-ckpt_path: "/home/fla/workspace/PCT_Lightning/logs/backup/2022-05-17_15-23-34/checkpoints/epoch_202.ckpt"
+ckpt_path: "/home/fla/workspace/2022-PCT-Lightning/logs/backup/2022-05-17_15-23-34/checkpoints/epoch_202.ckpt"

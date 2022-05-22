@@ -1,4 +1,6 @@
+import os
 from typing import Any, List
+from sqlalchemy import false
 
 import torch
 from pytorch_lightning import LightningModule
@@ -24,6 +26,8 @@ class PCTModule(LightningModule):
         net: torch.nn.Module,
         lr: float = 0.001,
         weight_decay: float = 0.0005,
+        visual_pc: bool = false,
+        visual_path: str = ''
     ):
         super().__init__()
 
@@ -44,6 +48,15 @@ class PCTModule(LightningModule):
 
         # for logging best so far validation accuracy
         self.val_acc_best = MaxMetric()
+
+        self.visual_pc = visual_pc
+        self.visual_path = visual_path
+
+        self.name_list = ["airplane","bathtub","bed","bench","bookshelf","bottle",\
+            "bowl","car","chair","cone","cup","curtain","desk","door","dresser","flower_pot",\
+            "glass_box","guitar","keyboard","lamp","laptop","mantel","monitor","night_stand",\
+            "person","piano","plant","radio","range_hood","sink","sofa","stairs","stool",\
+            "table","tent","toilet","tv_stand","vase","wardrobe","xbox"]
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
@@ -91,7 +104,7 @@ class PCTModule(LightningModule):
         acc = self.val_acc.compute()  # get val accuracy from current epoch
         self.val_acc_best.update(acc)
         self.log("val/acc_best", self.val_acc_best.compute(), on_epoch=True, prog_bar=True)
-
+    
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
@@ -100,9 +113,13 @@ class PCTModule(LightningModule):
         self.log("test/loss", loss, on_step=False, on_epoch=True)
         self.log("test/acc", acc, on_step=False, on_epoch=True)
 
-        # Visualize the result
-        
-
+        if self.visual_pc:
+            from src.utils.show3d_balls import showpoints
+            import cv2
+            for idx,data in enumerate(batch[0]):
+                image = showpoints(data.cpu().numpy(),freezerot=True,text="{}\{}".format(self.name_list[batch[1][idx]],self.name_list[preds[idx]]))
+                cv2.imwrite(os.path.join(self.visual_path,"{}_{}.png".format(batch_idx, idx)),image)
+                
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def test_epoch_end(self, outputs: List[Any]):
