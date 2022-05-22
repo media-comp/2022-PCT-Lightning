@@ -9,14 +9,20 @@ This repo is tested with:
 
 #### Software
 Ubuntu 20.04 LTS
+
 CUDA 11.6
+
 python 3.9
+
 cudatoolkit 11.3.1
+
 pytorch 1.11.0
+
 pytorch-lightning 1.6.3
 
 #### Hardware
 Intel i7-12700
+
 Nvidia GTX 1080
 
 ### Install
@@ -37,9 +43,9 @@ pip install requirements.txt
 
 You can download dataset and pre-trained model here: [Google Drive](https://drive.google.com/drive/folders/1nJCQBvBV0Xz9AZUYzQ0CvY0lSHdK1uVw?usp=sharing). 
 
-Put modelnet40_ply_hdf5_2048 under {Repo_dir}/data/
+Put `modelnet40_ply_hdf5_2048` under `{Repo_dir}/data/`
 
-Put model.ckpt anywhere you want, but please change configs/test.yaml line 32 ckpt_path to /your/path/to/model.ckpt
+Put `model.ckpt` anywhere you want, but please change `configs/test.yaml` line 32 `ckpt_path` to `/your/path/to/model.ckpt`
 
 
 ### Quick Test
@@ -70,7 +76,7 @@ g++ -std=c++11 render_balls_so.cpp -o render_balls_so.so -shared -fPIC -O2 -D_GL
 
 3. Configure
 
-Open ./configs/model/pct.yaml. Set visual_pc to true. Set visual_path to the path you want the output image to save. (Thousands of images)
+Open `./configs/model/pct.yaml`. Set `visual_pc` to `true`. Set `visual_path` to the path you want the output image to save. (Thousands of images)
 
 4. Run
 ```shell script
@@ -83,7 +89,7 @@ python test.py
 python train.py
 ```
 
-You can change the training parameters in ./configs/train.yaml
+You can change the training parameters in `./configs/train.yaml`
 
 ### Citation
 If it is helpful for your work, please cite this paper:
