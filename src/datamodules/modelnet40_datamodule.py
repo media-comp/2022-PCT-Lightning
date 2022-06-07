@@ -1,3 +1,4 @@
+from turtle import down
 from typing import Optional, Tuple
 
 import torch
@@ -17,6 +18,7 @@ class ModelNet40_DataModule(LightningDataModule):
         batch_size: int = 64,
         num_workers: int = 0,
         pin_memory: bool = False,
+        download: bool = False
     ):
         super().__init__()
 
@@ -32,6 +34,8 @@ class ModelNet40_DataModule(LightningDataModule):
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
         self.data_test: Optional[Dataset] = None
+
+        self.download = download
 
     @property
     def num_classes(self) -> int:
@@ -52,7 +56,8 @@ class ModelNet40_DataModule(LightningDataModule):
         so be careful not to execute the random split twice! The `stage` can be used to
         differentiate whether it's called before trainer.fit()` or `trainer.test()`.
         """
-
+        if self.download:
+            self.prepare_data()
         # load datasets only if they're not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
             trainset = ModelNet40(data_dir = self.data_dir, partition='train', num_points=self.hparams.num_points)
