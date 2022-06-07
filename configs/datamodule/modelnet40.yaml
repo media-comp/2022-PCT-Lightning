@@ -2,7 +2,7 @@ _target_: src.datamodules.modelnet40_datamodule.ModelNet40_DataModule
 
 num_points: 1024
 data_dir: ${data_dir} # data_dir is specified in config.yaml
-train_val_test_split: [10_000, 1_000, 1_308]
+train_val_test_split: [10_000, 2_000, 308]
 batch_size: 32
 num_workers: 15
 pin_memory: False
