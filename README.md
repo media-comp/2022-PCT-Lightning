@@ -3,6 +3,19 @@ This is a Pytorch Lightning implementation of PCT: Point Cloud Transformer.
 
 Paper link: https://arxiv.org/pdf/2012.09688.pdf
 
+## Welcome Any Pull Requests!
+
+This repo is about Classification of Point Cloud.
+
+Any kinds of PR are highly welcome! Here are just some possible ways for you to have a try. Let me know if you have any questions/ideas! 
+
+Possible PRs:
+- Better Visualization! (Plz help getting more refreshing images!)
+  - Hint: The related codes are in `/src/utils/show3d_balls.py`. Check `/src/models/pct_modules line 120` to see how the related function be called.
+- Clever Github Actions
+  - Current Action will download the whole dataset, which waste time.
+- Any other PRs
+
 <img src="https://github.com/media-comp/2022-PCT-Lightning/blob/main/imgs/0_8.png" width="500px">
 
 <img src="https://github.com/media-comp/2022-PCT-Lightning/blob/main/imgs/1_4.png" width="500px">

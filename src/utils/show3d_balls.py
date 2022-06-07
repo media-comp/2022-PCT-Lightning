@@ -48,6 +48,7 @@ def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlu
     c2=np.require(c2,'float32','C')
 
     show=np.zeros((showsz,showsz,3),dtype='uint8')
+
     def render():
         rotmat=np.eye(3)
         if not freezerot:
@@ -98,5 +99,6 @@ def showpoints(xyz,c_gt=None, c_pred = None ,waittime=0,showrot=False,magnifyBlu
             cv2.putText(show,'zoom %d%%'%(int(zoom*100)),(30,showsz-70),0,0.5,cv2.cv.CV_RGB(255,0,0))
         if not text == '':
             cv2.putText(show,'gt/pred: {}'.format(text),(30,showsz-30),0,0.5,(255,0,0))
+
     render()
     return show
