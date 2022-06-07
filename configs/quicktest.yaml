@@ -1,0 +1,38 @@
+# @package _global_
+
+# specify here default evaluation configuration
+defaults:
+  - _self_
+  - datamodule: modelnet40.yaml # choose the datamodule for evaluation
+    - num_points: 1024
+    - data_dir: ${data_dir} # data_dir is specified in config.yaml
+    - train_val_test_split: [10_000, 1_000, 1_308]
+    - batch_size: 32
+    - num_workers: 15
+    - pin_memory: False
+  - model: pct.yaml
+  - callbacks: null
+  - logger: null
+  - trainer: default.yaml
+  - log_dir: evaluation.yaml
+
+  - experiment: null
+
+  # enable color logging
+  - override hydra/hydra_logging: colorlog
+  - override hydra/job_logging: colorlog
+
+original_work_dir: ${hydra:runtime.cwd}
+
+data_dir: ${original_work_dir}/data/
+
+print_config: True
+
+ignore_warnings: True
+
+seed: null
+
+name: "default"
+
+# passing checkpoint path is necessary
+ckpt_path: "/home/fla/workspace/2022-PCT-Lightning/logs/backup/2022-05-17_15-23-34/checkpoints/epoch_202.ckpt"
