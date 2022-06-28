@@ -58,12 +58,27 @@ pip install requirements.txt
 
 3. Download dataset & pre-trained model
 
-You can download dataset and pre-trained model here: [Google Drive](https://drive.google.com/drive/folders/1nJCQBvBV0Xz9AZUYzQ0CvY0lSHdK1uVw?usp=sharing). 
+**Step 1**
 
-Put `modelnet40_ply_hdf5_2048` under `{Repo_dir}/data/`
+Download `model.ckpt` under `{Repo_dir}/data/`
+   
+If you want to put this file somewhere else, you need to change `configs/test/yaml` line 32 'ckpt_path' to `your/path/to/model.ckpt`
 
-Put `model.ckpt` anywhere you want, but please change `configs/test.yaml` line 32 `ckpt_path` to `/your/path/to/model.ckpt`
+**Step 2**
 
+Download the folder 'modelnet40_ply_hdf5_2048' from [Google Drive](https://drive.google.com/drive/folders/1nJCQBvBV0Xz9AZUYzQ0CvY0lSHdK1uVw?usp=sharing) and extract under `{Repo_dir}/data/`
+
+Or you can down load this folder by `gdown`:
+
+```shell
+cd Repo_dir # get to the reop dir
+pip install gdown
+mkdir data
+cd ./data
+gdown --folder https://drive.google.com/drive/folders/1imLOKJE-N4LWYpu4Hi15uA1-LRbHlZjA
+cd ..
+
+```
 
 ### Quick Test
 Run command:
@@ -79,7 +94,7 @@ Due to the hardware limitation, the pre-trained model has accuracy of 83.8% on t
 1. Install cv2
 
 ```shell script
-pip install cv2
+pip install opencv-python
 ```
 
 2. Compile
