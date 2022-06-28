@@ -115,7 +115,7 @@ Result:
 
 <img src="imgs/1_4.png" width="500px">
 
-**Method 1** (better if segmentation is included)
+**Method 2** (better if segmentation is included)
 
 1. Install matplotlib
 
