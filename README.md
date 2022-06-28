@@ -79,7 +79,7 @@ If you want to put `model.ckpt` to somewhere else, please remember to modify `co
 Open `./configs/model/pct.yaml`. Set `visual_pc` to `true`. Set `visual_path` to the path you want the output image to save. (Thousands of images).
 
 Example:
-```json
+```
 visual_pc: true
 visual_path: "/home/usr/code/2022-PCT-Lightning/vis_output"
 ```
