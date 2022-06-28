@@ -3,6 +3,8 @@ This is a Pytorch Lightning implementation of PCT: Point Cloud Transformer.
 
 Paper link: https://arxiv.org/pdf/2012.09688.pdf
 
+<img src="imgs/0_8.png" width="500px">
+
 ## Welcome Any Pull Requests!:sparkles::sparkles::sparkles:
 
 This repo is about Classification of Point Cloud.
@@ -16,9 +18,6 @@ Possible PRs:
   - Current Action will download the whole dataset, which waste time.
 - Any other PRs
 
-<img src="https://github.com/media-comp/2022-PCT-Lightning/blob/main/imgs/0_8.png" width="500px">
-
-<img src="https://github.com/media-comp/2022-PCT-Lightning/blob/main/imgs/1_4.png" width="500px">
 
 ### Requirements
 
@@ -53,43 +52,44 @@ conda activate pct_lightning
 
 2. Install the requirments.txt
 ```shell script
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
-3. Download dataset & pre-trained model
-
-**Step 1**
-
-Download `model.ckpt` under `{Repo_dir}/data/`
-   
-If you want to put this file somewhere else, you need to change `configs/test/yaml` line 32 'ckpt_path' to `your/path/to/model.ckpt`
-
-**Step 2**
-
-Download the folder 'modelnet40_ply_hdf5_2048' from [Google Drive](https://drive.google.com/drive/folders/1nJCQBvBV0Xz9AZUYzQ0CvY0lSHdK1uVw?usp=sharing) and extract under `{Repo_dir}/data/`
-
-Or you can down load this folder by `gdown`:
-
+3. Run the quick test
 ```shell
-cd Repo_dir # get to the reop dir
-pip install gdown
-mkdir data
-cd ./data
-gdown --folder https://drive.google.com/drive/folders/1imLOKJE-N4LWYpu4Hi15uA1-LRbHlZjA
-cd ..
-
+python quick_test.py
 ```
 
-### Quick Test
-Run command:
-
-```shell script
-python test.py
-```
+Pre-trained model will be automatically downloaded under `{Repo_dir}/data/`.
 
 Due to the hardware limitation, the pre-trained model has accuracy of 83.8% on the [ModelNet40](http://modelnet.cs.princeton.edu/) validation dataset.
 
+4. Download dataset 
+
+Download `model.ckpt` from [Google Drive](https://drive.google.com/drive/folders/1nJCQBvBV0Xz9AZUYzQ0CvY0lSHdK1uVw?usp=sharing), put it under `{Repo_dir}/data/`.
+
+  
+If you want to put `model.ckpt` to somewhere else, please remember to modify `configs/test.yaml` line 32 'ckpt_path' to `your/path/to/model.ckpt`
+
+
 ### Test with Visualization
+
+**Configuring**
+
+Open `./configs/model/pct.yaml`. Set `visual_pc` to `true`. Set `visual_path` to the path you want the output image to save. (Thousands of images).
+
+Example:
+```json
+visual_pc: true
+visual_path: "/home/usr/code/2022-PCT-Lightning/vis_output"
+```
+
+Then, there are 2 methods you can use to get images of point cloud:
+
+
+
+
+**Method 1**
 
 1. Install cv2
 
@@ -106,14 +106,36 @@ g++ -std=c++11 render_balls_so.cpp -o render_balls_so.so -shared -fPIC -O2 -D_GL
 
 ```
 
-3. Configure
-
-Open `./configs/model/pct.yaml`. Set `visual_pc` to `true`. Set `visual_path` to the path you want the output image to save. (Thousands of images)
-
-4. Run
+3. Run
 ```shell script
 python test.py
 ```
+
+Result:
+
+<img src="imgs/1_4.png" width="500px">
+
+**Method 1** (better if segmentation is included)
+
+1. Install matplotlib
+
+```shell script
+pip install matplotlib
+```
+
+2. Configure
+
+Open `./src/models/pct_module.py`. Set `plot_method = 2` in line 157.
+
+3. Run
+
+```shell script
+python test.py
+```
+
+Result:
+
+<img src="imgs/0_1.png" width="500px">
 
 ### Train
 
