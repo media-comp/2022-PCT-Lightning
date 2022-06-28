@@ -86,9 +86,6 @@ visual_path: "/home/usr/code/2022-PCT-Lightning/vis_output"
 
 Then, there are 2 methods you can use to get images of point cloud:
 
-
-
-
 **Method 1**
 
 1. Install cv2
@@ -135,7 +132,7 @@ python test.py
 
 Result:
 
-<img src="imgs/0_1.png" width="500px">
+<img src="imgs/0_25.png" width="500px">
 
 ### Train
 
