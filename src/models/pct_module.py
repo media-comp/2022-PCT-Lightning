@@ -7,6 +7,7 @@ from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
 from torchmetrics.classification.accuracy import Accuracy
 
+
 class PCTModule(LightningModule):
     """Example of LightningModule for MNIST classification.
 
@@ -27,7 +28,7 @@ class PCTModule(LightningModule):
         lr: float = 0.001,
         weight_decay: float = 0.0005,
         visual_pc: bool = false,
-        visual_path: str = ''
+        visual_path: str = "",
     ):
         super().__init__()
 
@@ -52,11 +53,48 @@ class PCTModule(LightningModule):
         self.visual_pc = visual_pc
         self.visual_path = visual_path
 
-        self.name_list = ["airplane","bathtub","bed","bench","bookshelf","bottle",\
-            "bowl","car","chair","cone","cup","curtain","desk","door","dresser","flower_pot",\
-            "glass_box","guitar","keyboard","lamp","laptop","mantel","monitor","night_stand",\
-            "person","piano","plant","radio","range_hood","sink","sofa","stairs","stool",\
-            "table","tent","toilet","tv_stand","vase","wardrobe","xbox"]
+        self.name_list = [
+            "airplane",
+            "bathtub",
+            "bed",
+            "bench",
+            "bookshelf",
+            "bottle",
+            "bowl",
+            "car",
+            "chair",
+            "cone",
+            "cup",
+            "curtain",
+            "desk",
+            "door",
+            "dresser",
+            "flower_pot",
+            "glass_box",
+            "guitar",
+            "keyboard",
+            "lamp",
+            "laptop",
+            "mantel",
+            "monitor",
+            "night_stand",
+            "person",
+            "piano",
+            "plant",
+            "radio",
+            "range_hood",
+            "sink",
+            "sofa",
+            "stairs",
+            "stool",
+            "table",
+            "tent",
+            "toilet",
+            "tv_stand",
+            "vase",
+            "wardrobe",
+            "xbox",
+        ]
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
@@ -103,8 +141,10 @@ class PCTModule(LightningModule):
     def validation_epoch_end(self, outputs: List[Any]):
         acc = self.val_acc.compute()  # get val accuracy from current epoch
         self.val_acc_best.update(acc)
-        self.log("val/acc_best", self.val_acc_best.compute(), on_epoch=True, prog_bar=True)
-    
+        self.log(
+            "val/acc_best", self.val_acc_best.compute(), on_epoch=True, prog_bar=True
+        )
+
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
@@ -114,12 +154,39 @@ class PCTModule(LightningModule):
         self.log("test/acc", acc, on_step=False, on_epoch=True)
 
         if self.visual_pc:
-            from src.utils.show3d_balls import showpoints
-            import cv2
-            for idx,data in enumerate(batch[0]):
-                image = showpoints(data.cpu().numpy(),freezerot=True,text="{}\{}".format(self.name_list[batch[1][idx]],self.name_list[preds[idx]]))
-                cv2.imwrite(os.path.join(self.visual_path,"{}_{}.png".format(batch_idx, idx)),image)
-                
+            plot_method = 1
+            if plot_method == 1:
+                import cv2
+
+                for idx, data in enumerate(batch[0]):
+                    image = showpoints(
+                        data.cpu().numpy(),
+                        freezerot=True,
+                        text="{}\{}".format(
+                            self.name_list[batch[1][idx]], self.name_list[preds[idx]]
+                        ),
+                    )
+                    cv2.imwrite(
+                        os.path.join(
+                            self.visual_path, "{}_{}.png".format(batch_idx, idx)
+                        ),
+                        image,
+                    )
+            elif plot_method == 2:
+                from src.utils.plot3d import plot3d
+
+                for idx, data in enumerate(batch[0]):
+                    plot3d(
+                        xyz=data.cpu().numpy(),
+                        savepath=os.path.join(
+                            self.visual_path, "{}_{}.png".format(batch_idx, idx)
+                        ),
+                        label="{}\{}".format(
+                            self.name_list[batch[1][idx]], self.name_list[preds[idx]]
+                        ),
+                    )
+                from src.utils.show3d_balls import showpoints
+
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def test_epoch_end(self, outputs: List[Any]):
@@ -139,5 +206,7 @@ class PCTModule(LightningModule):
             https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html#configure-optimizers
         """
         return torch.optim.Adam(
-            params=self.parameters(), lr=self.hparams.lr, weight_decay=self.hparams.weight_decay
+            params=self.parameters(),
+            lr=self.hparams.lr,
+            weight_decay=self.hparams.weight_decay,
         )
